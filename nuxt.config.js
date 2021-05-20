@@ -58,8 +58,22 @@ module.exports = {
   /*
   ** Nuxt.js modules
   */
-  modules: [],
-
+  modules: [
+    '@nuxtjs/firebase',
+  ],
+  firebase: {
+    config: {
+      apiKey: process.env.FIREBASE_API_KEY,
+      authDomain: "vue-gestor.firebaseapp.com",
+      projectId: "vue-gestor",
+      storageBucket: "vue-gestor.appspot.com",
+      messagingSenderId: "73685946271",
+      appId: "1:73685946271:web:11dc76d32841e0106277aa"
+    },
+    services: {
+      auth: true // Just as example. Can be any other service.
+    }
+  },
   /*
   ** Build configuration
   */
