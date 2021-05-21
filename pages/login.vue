@@ -44,14 +44,28 @@
     data: () => ({
       loading: false,
       model: {
-        username: 'admin@example.com',
-        password: 'password'
+        username: '',
+        password: '',
+        uid: {},
       }
     }),
 
     methods: {
-      login() {
-        this.loading = true;
+    async login() {
+        try {
+          this.loading = true;
+          
+          const { email, password } = this.model;
+          await this.$fireAuth.signInWithEmailAndPassword(email, password)
+          .then((userCredential) => {
+              this.uid = userCredential;
+              this.$router.push('/dashboard');
+              this.loading = false;
+            })
+        } 
+        catch (error) {
+          console.log(error);
+        }
         setTimeout(() => {
           this.$router.push('/dashboard');
         }, 1000);

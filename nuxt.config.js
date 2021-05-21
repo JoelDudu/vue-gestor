@@ -4,7 +4,7 @@ const pkg = require('./package')
 const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
 
 module.exports = {
-  mode: 'spa',
+  ssr: false,
 
   /*
   ** Headers of the page
@@ -64,14 +64,27 @@ module.exports = {
   firebase: {
     config: {
       apiKey: process.env.FIREBASE_API_KEY,
-      authDomain: "vue-gestor.firebaseapp.com",
-      projectId: "vue-gestor",
-      storageBucket: "vue-gestor.appspot.com",
-      messagingSenderId: "73685946271",
-      appId: "1:73685946271:web:11dc76d32841e0106277aa"
+      authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+      messagingSenderId: process.env.FIREBASE_SENDERID,
+      appId: process.env.FIREBASE_APP_ID
     },
     services: {
-      auth: true // Just as example. Can be any other service.
+      auth: {
+        persistence: 'local', // default
+        initialize: {
+          onAuthStateChangedMutation: 'SET_USER',
+          onAuthStateChangedAction: 'onAuthStateChangedAction',
+          subscribeManually: false
+        },
+        ssr: {
+          serverLogin: {
+            sessionLifetime: 60 * 60 * 1000,
+            loginDelay: 50
+          }
+        },
+      }
     }
   },
   /*
