@@ -53,26 +53,28 @@
     methods: {
     async login() {
         try {
-          this.loading = true;
-          
-          const { email, password } = this.model;
-          await this.$fireAuth.signInWithEmailAndPassword(email, password)
-          .then((userCredential) => {
-              this.uid = userCredential;
-              this.$router.push('/dashboard');
-              this.loading = false;
-            })
+              this.loading = true;
+              this.$store
+              .dispatch("signInWithEmail", {
+                email: this.email,
+                password: this.password
+              })
+                .then(() => {
+                  this.email = "";
+                  this.password = "";
+                  this.$router.push('/dashboard');
+                this.loading = false;
+              })
+              .catch(err => {
+                  alert(err.message);
+              });     
         } 
         catch (error) {
           console.log(error);
         }
-        setTimeout(() => {
-          this.$router.push('/dashboard');
-        }, 1000);
       }
     }
-
-  };
+  }
 </script>
 <style scoped lang="css">
   #login {

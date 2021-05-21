@@ -1,31 +1,32 @@
+import { auth } from '@/plugins/firebase.js'
+
 export const state = () => ({
   drawer: true,
-  authUser: {}
+  user: '',
+
+})
+
+export const getters= () => ({
+  user(state) {
+    return state.user
+  },
+
+  isAuthenticated(state) {
+    return !!state.user
+  }
 })
 
 export const actions = {
-  async onAuthStateChangedAction({ commit }, { authUser, claims }) {
-    const { uid, email, emailVerified, displayName, photoURL } = authUser
-  commit('SET_USER', {
-      uid,
-      email,
-      emailVerified,
-      displayName,
-      photoURL,
-      isAdmin: claims.custom_claim
-    })
+  signUp({ commit }, { email, password }) {
+    return auth.createUserWithEmailAndPassword(email, password)
   },
-  async nuxtServerInit({ dispatch, commit }, { res }) {
-    console.log(res.locals)
-    if (res && res.locals && res.locals.user) {
-      const { allClaims: claims, idToken: token, ...authUser } = res.locals.user
-      await dispatch('onAuthStateChangedAction', {
-        authUser,
-        claims,
-        token
-      })
-      commit('ON_AUTH_STATE_CHANGED_MUTATION', { authUser, claims, token })
-    }
+
+  signInWithEmail({ commit }, { email, password }) {
+    return auth.signInWithEmailAndPassword(email, password)
+  },
+
+  signOut() {
+    return auth.signOut()
   }
 }
 
@@ -36,19 +37,7 @@ export const mutations = {
   drawer(state, val) {
     state.drawer = val
   },
-  ON_AUTH_STATE_CHANGED_MUTATION(state, { authUser, claims }) {
-    const { uid, email, emailVerified, displayName, photoURL } = authUser
-    state.authUser = {
-      uid,
-      displayName,
-      email,
-      emailVerified,
-      photoURL: photoURL || null,
-      isAdmin: claims.custom_claim
-    }
-  },
-  SET_USER(state, payload) {
-    console.log(payload)
-    state.authUser = payload;
+  setUser(state, payload) {
+    state.user = payload
   }
 }
