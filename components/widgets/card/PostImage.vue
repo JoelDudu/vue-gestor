@@ -1,8 +1,8 @@
 <template>
   <v-card>
 
-    <v-card-media src="/static/nature/n3.jpeg" class="white--text">
-    <v-card-text>
+    <v-card-media src="/static/nature/n3.jpeg" class="white--text" />
+    <v-card-text />
  
     <v-divider></v-divider>
     <v-toolbar card color="white">

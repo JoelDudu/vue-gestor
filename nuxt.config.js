@@ -4,13 +4,22 @@ const pkg = require('./package')
 const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
 
 module.exports = {
-  mode: 'spa',
+  // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
+  ssr: false,
+
+  // Target: https://go.nuxtjs.dev/config-target
+  target: 'static',
+
+  env: {},
+
+  dev: process.env.NODE_ENV !== 'production',
 
   /*
   ** Headers of the page
   */
   head: {
-    title: 'Vue Material Admin Template',
+    titleTemplate: '%s - Gestor',
+    title: 'Site',
     meta: [
       {charset: 'utf-8'},
       {name: 'viewport', content: 'width=device-width, initial-scale=1'},
@@ -55,10 +64,37 @@ module.exports = {
     '@/plugins/vee-validate'
   ],
 
+  components: true,
+  
+  router: {
+    middleware: ['acesso']
+  },
   /*
   ** Nuxt.js modules
   */
-  modules: [],
+  modules: [
+      '@nuxtjs/firebase',
+    ],
+    firebase: {
+      config: {
+        apiKey: "AIzaSyAb39bE-zx0ADy005H38V8VWbBcPpxQVOo",
+        authDomain: process.env.FIREBASE_authDomain,
+        projectId: process.env.FIREBASE_projectId,
+        storageBucket: process.env.FIREBASE_storageBucket,
+        messagingSenderId: process.env.FIREBASE_messagingSenderId,
+        appId: process.env.FIREBASE_appId
+      },
+      services: {
+        auth: {
+          persistence: 'local', // default
+          initialize: {
+            onAuthStateChangedAction: 'onAuthStateChangedAction',
+            subscribeManually: false
+          },
+          ssr: false,
+        }
+      }
+    },
 
   /*
   ** Build configuration
