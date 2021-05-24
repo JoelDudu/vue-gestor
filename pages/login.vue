@@ -15,6 +15,9 @@
                                 v-model="model.username"></v-text-field>
                   <v-text-field append-icon="lock" name="password" label="Senha" id="password" type="password"
                                 v-model="model.password"></v-text-field>
+                  <v-alert type="error" dismissible v-model="alert.valor">
+                  {{alert.texto}}
+                  </v-alert>                                
                 </v-form>
               </v-card-text>
               <v-card-actions>
@@ -43,6 +46,7 @@
     layout: 'default',
     data: () => ({
       loading: false,
+      alert:{valor: false, texto: '' },
       model: {
         username: '',
         password: ''
@@ -54,9 +58,8 @@
         let that = this
         this.$fire.auth.signInWithEmailAndPassword(this.model.username, this.model.password)
         .catch(function (error){
-          this.loading = fase;
-          that.snackbarText = error.message
-          that.snackbar = true
+          //this.alert.texto = error.message;
+          this.alert.valor = true;
         }).then((user) => {
           //we are signed in
           $nuxt.$router.push('/dashboard')

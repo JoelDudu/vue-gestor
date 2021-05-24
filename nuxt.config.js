@@ -77,7 +77,7 @@ module.exports = {
     ],
     firebase: {
       config: {
-        apiKey: "AIzaSyAb39bE-zx0ADy005H38V8VWbBcPpxQVOo",
+        apiKey: process.env.FIREBASE_API_KEY,
         authDomain: process.env.FIREBASE_authDomain,
         projectId: process.env.FIREBASE_projectId,
         storageBucket: process.env.FIREBASE_storageBucket,
